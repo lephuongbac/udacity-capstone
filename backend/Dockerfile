@@ -2,12 +2,12 @@ FROM node:14-alpine as development
 
 WORKDIR /usr/src/app
 
-COPY backend/package.json ./
-COPY backend/package-lock.json ./
+COPY package.json ./
+COPY package-lock.json ./
 
 RUN npm i
 
-COPY backend .
+COPY . .
 
 RUN npm run build
 
