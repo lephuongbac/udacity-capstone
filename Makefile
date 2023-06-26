@@ -16,3 +16,6 @@ test:
 build-docker:
 	echo "Building docker image..."
 	docker build -t udacity-capstone:1.0.0 .
+create-eks-cluster:
+	echo "Creating EKS cluster..."
+	eksctl create cluster -f ./eks/cluster.yml

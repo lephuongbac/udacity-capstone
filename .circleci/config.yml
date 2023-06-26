@@ -64,6 +64,6 @@ workflows:
               path: [backend]
               docker-context: [backend]
               deploy: [true]
-              tag: ["1.0.0", "latest"]
+              tag: ["${CIRCLE_SHA1}", "latest"]
               update-description: [true]
           requires: [test-backend]
