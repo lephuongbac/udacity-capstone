@@ -1,0 +1,66 @@
+version: 2.1
+
+jobs:
+  build-backend:
+    docker:
+      - image: cimg/node:14.15.4
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [backend-build]
+      - run:
+          name: Back-end build
+          command: |
+            cd backend
+            npm install
+            npm run build
+      - save_cache:
+          paths: [backend/node_modules]
+          key: backend-build
+
+  test-backend:
+    docker:
+      - image: cimg/node:14.15.4
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [backend-build]
+      - run:
+          name: Backend test
+          command: |
+            cd backend
+            npm install
+            npm run test
+
+  lint-backend:
+    docker:
+      - image: cimg/node:14.15.4
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [backend-build]
+      - run:
+          name: Backend test
+          command: |
+            cd backend
+            npm install
+            npm run lint
+
+workflows:
+  default:
+    jobs:
+      - build-backend
+      - test-backend:
+          requires: [build-backend]
+      - lint-backend:
+          requires: [build-backend]
+      - docker/publish:
+          matrix:
+            parameters:
+              image: [$DOCKER_LOGIN/udacity-capstone]
+              path: [backend]
+              docker-context: [backend]
+              deploy: [true]
+              tag: ["1.0.0", "latest"]
+              update-description: [true]
+          requires: [init]
