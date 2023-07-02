@@ -5,9 +5,6 @@ metadata:
   name: capstone
   region: ap-southeast-1
 
-iam:
-  withOIDC: true
-
 nodeGroups:
   - name: ng-1
     instanceType: t2.small
